@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="IServiceCXFService" targetNamespace="http://mx.edx.com.cxf.spring/" 
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+                  xmlns:tns="http://mx.edx.com.cxf.spring/" 
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <!-- Inside WSDl types we declare our schema -->
+    <wsdl:types>
+        <xs:schema xmlns:tns="http://mx.edx.com.cxf.spring/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" 
+                   targetNamespace="http://mx.edx.com.cxf.spring/" version="1.0">
+            <xs:element name="sayHiInput" type="xs:string"/>
+            <xs:element name="sayHiOutput" type="xs:string"/>
+        </xs:schema>
+    </wsdl:types>
+    <!-- Here in WSDL message we are referencing our types declared in our sample schema -->
+    <wsdl:message name="getResponseMessageIn">
+        <wsdl:part name="parameters" element="tns:sayHiInput">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getResponseMessageOut">
+        <wsdl:part name="parameters" element="tns:sayHiOutput">
+        </wsdl:part>
+    </wsdl:message>
+    <!-- Here we declare our portType with Operation name; input and output messages -->
+    <wsdl:portType name="IServiceCXF">
+        <wsdl:operation name="getResponseOp">
+            <wsdl:input name="getResponseIn" message="tns:getResponseMessageIn">
+            </wsdl:input>
+            <wsdl:output name="getResponseOut" message="tns:getResponseMessageOut">
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <!-- Here we do the soapBinding with our portType -->
+    <wsdl:binding name="IServiceCXFServiceSoapBinding" type="tns:IServiceCXF">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getResponseOp">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getResponseIn">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getResponseOut">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <!-- Finally we declare soap address for our Service with previosly defined port and binding -->
+    <wsdl:service name="IServiceCXFService">
+        <wsdl:port name="IServiceCXFPort" binding="tns:IServiceCXFServiceSoapBinding">
+            <soap:address location="http://localhost:9090/IServiceCXF"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
